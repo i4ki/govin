@@ -3,14 +3,20 @@ package govin
 import "errors"
 
 type (
-	wmiRange struct {
+	wmiRegionRange struct {
 		low1, low2         rune
 		high1, high2       rune
 		continent, country string
 	}
 
+	WMIManufacturer struct {
+		code string
+		name string
+	}
+
 	WMI struct {
 		code, continent, country string
+		manufacturer             WMIManufacturer
 	}
 
 	WMIMap map[string]WMI
@@ -18,123 +24,9 @@ type (
 
 var (
 	codes = []rune{
-		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-		'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z', '1', '2', '3',
-		'4', '5', '6', '7', '8', '9', '0',
-	}
-
-	africaRanges = []wmiRange{
-		wmiRange{
-			'A', 'A', 'A', 'H', "Africa", "South Africa",
-		},
-		wmiRange{
-			'A', 'J', 'A', 'N', "Africa", "Ivory Coast",
-		},
-		wmiRange{
-			'A', 'P', 'A', '0', "Africa", "not assigned",
-		},
-		wmiRange{
-			'B', 'A', 'B', 'E', "Africa", "Angola",
-		},
-		wmiRange{
-			'B', 'F', 'B', 'K', "Africa", "Kenya",
-		},
-		wmiRange{
-			'B', 'L', 'B', 'R', "Africa", "Tanzania",
-		},
-		wmiRange{
-			'B', 'S', 'B', '0', "Africa", "not assigned",
-		},
-		wmiRange{
-			'C', 'A', 'C', 'E', "Africa", "Benin",
-		},
-		wmiRange{
-			'C', 'F', 'C', 'K', "Africa", "Madagascar",
-		},
-		wmiRange{
-			'C', 'L', 'C', 'R', "Africa", "Tunisia",
-		},
-		wmiRange{
-			'C', 'S', 'C', '0', "Africa", "not assigned",
-		},
-		wmiRange{
-			'D', 'A', 'D', 'E', "Africa", "Egypt",
-		},
-		wmiRange{
-			'D', 'F', 'D', 'K', "Africa", "Morocco",
-		},
-		wmiRange{
-			'D', 'L', 'D', 'R', "Africa", "Zambia",
-		},
-		wmiRange{
-			'D', 'S', 'D', '0', "Africa", "not assigned",
-		},
-		wmiRange{
-			'E', 'A', 'E', 'E', "Africa", "Ethiopia",
-		},
-		wmiRange{
-			'E', 'F', 'E', 'K', "Africa", "Mozambique",
-		},
-		wmiRange{
-			'E', 'L', 'E', '0', "Africa", "not assigned",
-		},
-		wmiRange{
-			'F', 'A', 'F', 'E', "Africa", "Ghana",
-		},
-		wmiRange{
-			'F', 'F', 'F', 'K', "Africa", "Nigeria",
-		},
-		wmiRange{
-			'F', 'L', 'F', '0', "Africa", "not assigned",
-		},
-		wmiRange{
-			'G', 'A', 'G', '0', "Africa", "not assigned",
-		},
-		wmiRange{
-			'H', 'A', 'H', '0', "Africa", "not assigned",
-		},
-	}
-
-	samericaRanges = []wmiRange{
-		wmiRange{
-			'8', 'A', '8', 'E', "South America", "Argentina",
-		},
-		wmiRange{
-			'8', 'F', '8', 'K', "South America", "Chile",
-		},
-		wmiRange{
-			'8', 'L', '8', 'R', "South America", "Ecuador",
-		},
-		wmiRange{
-			'8', 'S', '8', 'W', "South America", "Peru",
-		},
-		wmiRange{
-			'8', 'X', '8', '2', "South America", "Venezuela",
-		},
-		wmiRange{
-			'8', '3', '8', '0', "South America", "not assigned",
-		},
-		wmiRange{
-			'9', 'A', '9', 'E', "South America", "Brazil",
-		},
-		wmiRange{
-			'9', 'F', '9', 'K', "South America", "Colombia",
-		},
-		wmiRange{
-			'9', 'L', '9', 'R', "South America", "Paraguay",
-		},
-		wmiRange{
-			'9', 'S', '9', 'W', "South America", "Uruguay",
-		},
-		wmiRange{
-			'9', 'X', '9', '2', "South America", "Trinidad & Tobago",
-		},
-		wmiRange{
-			'9', '3', '9', '9', "South America", "Brazil",
-		},
-		wmiRange{
-			'9', '0', '9', '0', "South America", "not assigned",
-		},
+		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N',
+		'P', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z', '1', '2', '3', '4',
+		'5', '6', '7', '8', '9', '0',
 	}
 
 	countryRanges = append(africaRanges, samericaRanges...)
@@ -166,7 +58,7 @@ func genWMIMap() (WMIMap, error) {
 	return genWMIFromRanges(countryRanges)
 }
 
-func genWMIFromRanges(cranges []wmiRange) (WMIMap, error) {
+func genWMIFromRanges(cranges []wmiRegionRange) (WMIMap, error) {
 	wmiMap := make(WMIMap)
 
 	if len(cranges) == 0 {

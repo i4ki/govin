@@ -15,8 +15,8 @@ func TestWMIGeneration(t *testing.T) {
 		return
 	}
 
-	wmiMap, err := genWMIFromRanges([]wmiRange{
-		wmiRange{
+	wmiMap, err := genWMIFromRanges([]wmiRegionRange{
+		wmiRegionRange{
 			'A', 'A', 'A', 'H', "Africa", "South Africa",
 		},
 	})
@@ -49,8 +49,8 @@ func TestWMIGeneration(t *testing.T) {
 		}
 	}
 
-	wmiMap, err = genWMIFromRanges([]wmiRange{
-		wmiRange{
+	wmiMap, err = genWMIFromRanges([]wmiRegionRange{
+		wmiRegionRange{
 			'A', 'J', 'A', 'N', "Africa", "Ivory Coast",
 		},
 	})
